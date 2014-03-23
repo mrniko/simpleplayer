@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="blue_deep">#33B5E5</color>
+	<color name="near_white">#fafafa</color>
+	<color name="gray">#ebebeb</color>
+	<color name="black">#000000</color>
+    <color name="blue_light">#b8e0ef</color>
+    <color name="list_divider">#b5b5b5</color>
+    <color name="red">#ff0000</color>
+    <color name="elapsed_time_normal">@color/near_white</color>
+    <color name="elapsed_time_red">@color/red</color>
+    <color name="selected_song_highlight_dark">#2727F5</color>
+</resources>

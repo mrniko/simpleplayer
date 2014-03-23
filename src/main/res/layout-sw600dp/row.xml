@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/listview_bg_selector"
+                android:orientation="horizontal"
+                android:id="@+id/layout_rows"
+                android:padding="2dp" >
+
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="2dp"
+                  android:layout_marginRight="5dp"
+                  android:layout_alignParentLeft="true">
+        <ImageView
+                android:id="@+id/icon"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:src="@drawable/ic_launcher"
+                />
+    </LinearLayout>
+
+    <!-- Name of the song-->
+    <TextView
+            android:id="@+id/text_toptext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:layout_centerVertical="true"
+            android:text="Title of the song tttttttttttttt jjjjjjjjjj jjjjj tt  ttttttttt"
+            android:textColor="@color/near_white"
+            android:typeface="sans"
+            android:textSize="22sp"
+            android:maxLines = "2"
+            android:layout_marginRight="38sp"
+            android:ellipsize = "marquee"
+
+            />
+
+    <!-- Rightend Duration -->
+    <TextView
+            android:id="@+id/text_track_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="--:--"
+            android:textSize="20sp"
+            android:textColor="@color/near_white"
+            android:textStyle="bold"/>
+    <ImageView
+            android:id="@+id/image_playing"
+            android:background="@drawable/ic_media_play"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
+
+</RelativeLayout>

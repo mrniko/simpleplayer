@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elapsed_time_std">28dp</dimen>
+    <dimen name="elapsed_time_big">38dp</dimen>
+    <dimen name="bottom_bar_height">82dp</dimen>
+</resources>

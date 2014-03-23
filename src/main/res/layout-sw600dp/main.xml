@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="bottom" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/layout_list_container"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/text_path"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_deep" />
+         <ListView
+	        android:id="@android:id/list"
+    	    android:layout_width="wrap_content"
+        	android:layout_height="fill_parent"
+        	android:divider="@color/list_divider"
+        	android:dividerHeight="1dp"
+        	android:listSelector="@drawable/listview_bg_selector" 
+        	android:fastScrollEnabled="true" android:layout_gravity="right|center_vertical"/>
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@color/near_white"
+            android:text="@string/no_data"/>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/layout_list_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+    
+		<!--  First part of layout -->
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="@dimen/bottom_bar_height"
+	        android:layout_weight="0.5"
+	        android:orientation="horizontal" >
+	        <Button
+	            android:id="@+id/button_prev"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="0.8"
+	            android:text="@string/prev_str"
+	            android:textSize="16pt"
+                android:textColor="@color/black"
+	            android:background="@drawable/custom_button_tablet"
+	           />
+	        <Button
+		        android:id="@+id/button_playstop"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent" 
+		        android:layout_weight="0.6"   
+		        android:text="@string/button_play"
+		        android:textSize="14pt"
+                android:textColor="@color/black"
+		        android:background="@drawable/custom_button_tablet"/>
+	        <Button
+	            android:id="@+id/button_next"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="0.8"
+	            android:text="@string/next_str"
+	            android:textSize="16pt"
+                android:textColor="@color/black"
+	            android:background="@drawable/custom_button_tablet"/>
+	 </LinearLayout>
+
+    <!--  Second part of layout -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:layout_weight="0.5"
+        android:background="@drawable/downlayout_tablet"
+         >
+
+	    <LinearLayout
+	        android:id="@+id/layout_trackinfo"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+	        android:gravity="center"
+	        android:orientation="vertical" 
+	        android:layout_marginBottom="2dp">
+		   <org.sergez.splayer.view.ScrollingTextView
+		        android:id="@+id/text_tracktime"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="1dp"      
+		        android:text="@string/track_name"
+		        android:textColor="@color/black"        
+		        android:textSize="22sp"
+	            android:lines="1"	            
+	            android:scrollHorizontally="true"
+	            android:ellipsize="marquee"
+	            android:marqueeRepeatLimit="marquee_forever"
+	            />
+		   <org.sergez.splayer.view.ScrollingTextView
+		        android:id="@+id/text_trackartist"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:textSize="16sp"
+		        android:textColor="@color/black"
+		        android:text="@string/artist" 
+	            android:lines="1"
+	            android:scrollHorizontally="true"
+	            android:ellipsize="marquee"
+	            android:marqueeRepeatLimit="marquee_forever"
+		         />   
+	    </LinearLayout>
+        <SeekBar
+                android:id="@+id/seekbar_main"
+                android:layout_alignParentBottom="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:progress="0"
+                android:secondaryProgress="0"
+                android:thumb="@drawable/seekbar_thumb_selector_tablet"
+                android:progressDrawable="@drawable/seekbar_progress"
+                android:maxHeight="6dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="4dp"
+                />
+
+        <LinearLayout
+                android:id="@+id/layout_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_centerVertical="true">
+			    <TextView
+			        android:id="@+id/text_current_tracktime"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="@string/time_str"
+			        android:textSize="28dp"
+                    android:layout_gravity="left"
+                    android:textColor="@color/elapsed_time_normal"
+                    android:gravity="left" android:layout_weight="0.5"/>
+
+			    <TextView
+			        android:id="@+id/text_left_tracktime"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="@string/time_str"
+			        android:textSize="28dp"
+                    android:textColor="@color/black"
+					android:layout_weight="0.5"
+                    android:gravity="right"/>
+         </LinearLayout>
+	    </RelativeLayout>
+	</LinearLayout>
+</RelativeLayout>

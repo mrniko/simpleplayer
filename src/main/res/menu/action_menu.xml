@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+            android:icon="@drawable/ic_menu_moreoverflow"
+            android:showAsAction="always"
+            android:id="@+id/action_settings"
+            android:title="Settings">
+        <menu>
+            <item
+                    android:id="@+id/menu_settings"
+                    android:showAsAction="always"
+                    android:title="@string/menu_settings">
+            </item>
+            <item
+                    android:id="@+id/menu_file_props"
+                    android:showAsAction="always"
+                    android:title="@string/menu_file_props">
+            </item>
+            <item
+                    android:id="@+id/menu_repeat"
+                    android:showAsAction="always"
+                    android:title="Repeat: OFF">
+            </item>
+            <item
+                    android:id="@+id/menu_shuffle"
+                    android:showAsAction="always"
+                    android:title="Shuffle: OFF">
+            </item>
+            <item
+                    android:id="@+id/menu_send_feedback"
+                    android:showAsAction="always"
+                    android:title="Send feedback">
+            </item>
+            <item
+                    android:id="@+id/menu_exit"
+                    android:showAsAction="always"
+                    android:title="@string/menu_exit">
+            </item>
+        </menu>
+    </item>
+</menu>

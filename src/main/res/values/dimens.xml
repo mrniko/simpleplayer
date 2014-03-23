@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elapsed_time_std">20dp</dimen>
+    <dimen name="elapsed_time_big">26dp</dimen>
+    <dimen name="control_buttons_height">62dp</dimen>
+
+</resources>

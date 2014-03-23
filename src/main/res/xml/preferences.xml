@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <PreferenceCategory
+            	android:key="mainSettingsKey"
+                android:title="Main settings">
+                <CheckBoxPreference
+                        android:title="Files from internal memory"
+                        android:defaultValue="true"
+                        android:summary="Search files not only in the SDCard. Current list of files will be refreshed"
+                        android:key="checkboxInternalMemory" /> 
+                <CheckBoxPreference
+                        android:title="Single file playback"
+                        android:defaultValue="false"
+                        android:summary="Stop after each file was played"
+                        android:key="checkboxStopAfterEachFile" /> 
+                <CheckBoxPreference
+                        android:title="Not start play on click"
+                        android:defaultValue="false"
+                        android:summary="Wait for press 'PLAY' button when going to play clicked file in the list"
+                        android:key="checkboxPlayOnlyOnButtonPressed" />
+            <Preference
+                    android:title="Refresh media files"
+                    android:summary="Find new media and exclude deleted ones"
+                    android:key="refreshMedia" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="Appearance">
+            <CheckBoxPreference
+                    android:title="Show file extension"
+                    android:key="checkboxShowExtension"
+                    android:defaultValue="false"/>
+            <CheckBoxPreference
+                    android:title="Big font"
+                    android:summary="Makes font for the list of tracks bigger"
+                    android:key="checkboxBigFont"
+                    android:defaultValue="false"/>
+            <CheckBoxPreference
+                    android:title="Large red elapsed time"
+                    android:key="checkboxRedElapsedTime"
+                    android:defaultValue="false"/>
+        <!--</PreferenceCategory>-->
+
+        <!--<PreferenceCategory-->
+                <!--android:title="Additional">-->
+          <!--<Preference-->
+                <!--android:title="Make a donation"-->
+                <!--android:summary="Helps to develop this product"-->
+                <!--android:key="showDonate"/>-->
+          <Preference
+                android:title="About"
+                android:key="showAbout"/>
+        </PreferenceCategory>
+</PreferenceScreen>

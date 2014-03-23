@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/listview_bg_selector"
+    android:orientation="horizontal"
+    android:id="@+id/layout_rows"
+    android:padding="2dp" >
+ 
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"      
+        android:layout_marginRight="5dp"
+        android:layout_alignParentLeft="true">
+        <ImageView            
+            android:id="@+id/icon"
+            android:layout_width="56sp"
+            android:layout_height="56sp"
+            android:src="@drawable/ic_launcher"
+            />
+    </LinearLayout>
+ 
+    <!-- Name of the song-->
+    <TextView
+        android:id="@+id/text_toptext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_centerVertical="true"	
+        android:text="Title of the song tttttttttttttttt  ttttttttt"
+        android:textColor="@color/near_white"
+        android:typeface="sans"
+        android:textSize="17sp"
+		android:maxLines = "2"
+		android:layout_marginRight="37sp"
+        android:ellipsize = "marquee"
+     
+        />
+    <!--android:textStyle="bold" -->
+<!--        
+		android:lines="1"
+		android:maxLines = "2"
+		android:scrollHorizontally = "true"
+		android:marqueeRepeatLimit="marquee_forever" --> 
+    <!-- Artist Name
+    <org.sergez.splayer.view.ScrollingTextView
+        android:id="@+id/trackArtist"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toptext"
+        android:textColor="@color/near_white"
+        android:textSize="14sp"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Artist title" 
+		android:layout_marginRight="37sp"
+        android:ellipsize = "marquee"
+		android:lines="1"
+		android:maxLines = "1"
+		android:scrollHorizontally = "true"
+		android:marqueeRepeatLimit="marquee_forever"
+        />  -->
+ 
+    <!-- Rightend Duration -->
+   	    <TextView
+	        android:id="@+id/text_track_duration"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"       
+        	android:layout_marginRight="5sp"        
+         	android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"	        
+	        android:text="--:--"	        
+	        android:textSize="14sp"
+	        android:textColor="@color/near_white"
+	        android:textStyle="bold"/>
+   	     <ImageView            
+            android:id="@+id/image_playing"
+            android:background="@drawable/ic_media_play"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"	        
+	        android:visibility="gone"
+            />
+	  
+</RelativeLayout>
