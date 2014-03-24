@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceScreen;
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import org.sergez.splayer.R;
@@ -54,29 +55,32 @@ public class PreferencesActivity extends SherlockPreferenceActivity {
 			}
 
 		});
-
 		Preference rowRefreshMedia = (Preference) findPreference("refreshMedia");
-
-		rowRefreshMedia.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				if (android.os.Environment.MEDIA_MOUNTED.equals(android.os.Environment.getExternalStorageState())) {
-					IntentFilter mountedMediaFilter;
-					mountedMediaFilter = new IntentFilter(Intent.ACTION_MEDIA_SCANNER_FINISHED);
-					mountedMediaFilter.addDataScheme("file");
-					mediaIntentReceiver = new MediaIntentReceiver();
-					registerReceiver(mediaIntentReceiver, mountedMediaFilter);
-					sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
-							Uri.parse("file://" + Environment.getExternalStorageDirectory())));
-					pDialog = ProgressDialog.show(PreferencesActivity.this, getString(R.string.refreshing_media), getString(R.string.please_wait), true, false);
-				} else {
-					new AlertDialog.Builder(PreferencesActivity.this)
-							.setTitle(R.string.app_name)
-							.setMessage(R.string.media_cant_be_refreshed)
-							.setPositiveButton(R.string.ok, null).show();
+		if (android.os.Build.VERSION.SDK_INT > 18) {  // in Kitkat and newer intent.action.MEDIA_MOUNTED os blocked
+			PreferenceScreen preferenceScreen = getPreferenceScreen();
+			preferenceScreen.removePreference(rowRefreshMedia);
+		} else {
+			rowRefreshMedia.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				public boolean onPreferenceClick(Preference preference) {
+					if (android.os.Environment.MEDIA_MOUNTED.equals(android.os.Environment.getExternalStorageState())) {
+						IntentFilter mountedMediaFilter;
+						mountedMediaFilter = new IntentFilter(Intent.ACTION_MEDIA_SCANNER_FINISHED);
+						mountedMediaFilter.addDataScheme("file");
+						mediaIntentReceiver = new MediaIntentReceiver();
+						registerReceiver(mediaIntentReceiver, mountedMediaFilter);
+						sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+								Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+						pDialog = ProgressDialog.show(PreferencesActivity.this, getString(R.string.refreshing_media), getString(R.string.please_wait), true, false);
+					} else {
+						new AlertDialog.Builder(PreferencesActivity.this)
+								.setTitle(R.string.app_name)
+								.setMessage(R.string.media_cant_be_refreshed)
+								.setPositiveButton(R.string.ok, null).show();
+					}
+					return true;
 				}
-				return true;
-			}
-		});
+			});
+		}
 
 	}
 

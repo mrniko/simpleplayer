@@ -2,6 +2,7 @@ package org.sergez.splayer.activity;
 
 
 import android.content.*;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -51,12 +52,12 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	private TextView textArtist;
 	private LinearLayout trackInfoLayout;
 	private LinearLayout timesLayout;
-	private boolean externalMediaMounted = false;
-	private boolean readInternalMedia = false;
+	private boolean externalMediaMounted;
+	private boolean readInternalMedia;
 
 	private final Handler mHandler = new Handler();
 
-	private boolean mIsBound = false;
+	private boolean mIsBound;
 
 	private PlayFileAdapter fileListAdapter;
 	private PlayerServiceIntentReceiver playerServiceIntentReceiver;
@@ -71,7 +72,9 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		if (!getResources().getBoolean(R.bool.tablet_layout)) { // for non-tablet only portrait orientation looks good
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
 		setContentView(R.layout.main);
 		initComponents();
 		if (savedInstanceState == null) {
