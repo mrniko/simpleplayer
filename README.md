@@ -12,12 +12,16 @@ Features:
 - Reads internal and external device memory
 - Change in audio outputs detection
 
-I’ve published this project on Google Play at 2012 and it was my first Android app. 
+I published this project on Google Play at 2012 and it was my first Android app. 
 
 <a href="https://play.google.com/store/apps/details?id=org.sergez.splayer">
   <img alt="Get it on Google Play"
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
 </a>
+
+
+Screenshots
+========
 
 
 How to build
