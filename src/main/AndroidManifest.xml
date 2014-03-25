@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.sergez.splayer"
-          android:versionCode="34"
-          android:versionName="2.0.6.4 Alpha"
+          android:versionCode="36"
+          android:versionName="2.0.7"
           android:installLocation="auto"
         >
 

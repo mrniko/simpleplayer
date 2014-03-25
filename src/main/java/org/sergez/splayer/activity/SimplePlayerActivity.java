@@ -1,6 +1,5 @@
 package org.sergez.splayer.activity;
 
-
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -77,11 +76,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 		setContentView(R.layout.main);
 		initComponents();
-		if (savedInstanceState == null) {
-			startPlayerService();
-		}
-		doBindService();
-		registerIntentReceivers();
+		startPlayerServiceAndReceiver();
 	}
 
 
@@ -132,7 +127,11 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	public void onStop() {
 		memoryCache.clear();
 		if ((playerService != null) && (playerService.playerState < 1)) { //if player isn't playing
-			stopPlayerService();
+			PlayerState.saveState(this, playerService);
+			unregisterReceiver(playerServiceIntentReceiver);
+			stopService(new Intent(getApplicationContext(), SimplePlayerService.class));
+			doUnbindService();
+			playerService = null;
 		}
 
 		super.onStop();
@@ -196,9 +195,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	public void onRestart() {
 		super.onRestart();
 		if (playerService == null) {
-			startPlayerService();
-			doBindService();
-			registerIntentReceivers();
+			startPlayerServiceAndReceiver();
 			//all other things for player init we have to do in onServiceConnected()
 		}
 	}
@@ -293,14 +290,6 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 	}
 
-	private void stopPlayerService(){
-		PlayerState.saveState(this, playerService);
-		playerService.stopForeground(true);
-		unregisterReceiver(playerServiceIntentReceiver);
-		stopService(new Intent(getApplicationContext(),	SimplePlayerService.class));
-		doUnbindService();
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return Utils.menuClick(item, this, playerService);
@@ -345,11 +334,13 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 	}
 
-	private void startPlayerService() {
+	private void startPlayerServiceAndReceiver() {
 		Intent music = new Intent();
 		music.setAction(SimplePlayerService.ACTION_START);
 		music.setClass(this, SimplePlayerService.class);
 		startService(music);
+		doBindService();
+		registerIntentReceivers();
 	}
 
 	/**
