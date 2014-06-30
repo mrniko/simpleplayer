@@ -14,7 +14,6 @@ import static org.sergez.splayer.util.PrefsConstants.PREF_CHECKBOX_STOP_AFTER_EA
  *         Time: 21:18
  */
 public final class PrefsController {
-	private final static String PREF_FIRST_RUN = "firstRun";
 
 	private PrefsController(){
 

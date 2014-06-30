@@ -55,7 +55,7 @@ public final class Utils {
 				spActivity.startActivity(preferencesActivity);
 				return true;
 			case R.id.menu_file_props:
-				if ((playerService.playerState >= 0)) {
+				if ((playerService!=null)&&(playerService.playerState >= 0)) {
 					String selection = MediaStore.Audio.Media.DATA + " like ?";
 					String[] selectionArgs = {playerService
 							.getCurrentlyPlayingFilePath() + "%"};
@@ -110,6 +110,7 @@ public final class Utils {
 							.setTitle(R.string.properties)
 							.setMessage(R.string.media_wasnt_sel)
 							.setPositiveButton(R.string.ok, null).show();
+                    return true;
 				}
 			case R.id.menu_exit:
 				spActivity.finish();
@@ -128,7 +129,7 @@ public final class Utils {
 					Log.e(TAG, e.getMessage(), e);
 					version = "?";
 				}
-				sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Simple Player " + version + " - Feedback");
+				sendIntent.putExtra(Intent.EXTRA_SUBJECT, spActivity.getString(R.string.app_name) + " " + version + " - Feedback");
 				sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sergii.dev@gmail.com"});
 				sendIntent.setType("plain/text");
 				spActivity.startActivity(Intent.createChooser(sendIntent, "Send feedback"));
