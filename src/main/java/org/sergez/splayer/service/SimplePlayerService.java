@@ -1,12 +1,13 @@
 package org.sergez.splayer.service;
 
-import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import org.sergez.splayer.R;
@@ -43,7 +45,11 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 	private static final int NOTIFY_PLAYING = 1;
 
 	//to send information to Activity via intent
-	public static final String NOWPLAYING = "NOWPLAYING";
+	public static final String ACTION_NOWPLAYING = "ACTION_NOWPLAYING";
+    public static final String ACTION_FROM_NOTIF_NEXT = "ACTION_FROM_NOTIF_NEXT";
+    public static final String ACTION_FROM_NOTIF_PLAY = "ACTION_FROM_NOTIF_PLAY";
+    public static final String ACTION_FROM_NOTIF_PREV = "ACTION_FROM_NOTIF_PREV";
+    public static final String ACTION_FROM_NOTIF_PAUSE = "ACTION_FROM_NOTIF_PAUSE";
 	public static final String NOWPLAYING_FILEPATH = "NOWPLAYING_FILEPATH";
 	public static final String NOWPLAYING_PLAY_CURRENT = "NOWPLAYING_PLAY_CURRENT";
 	public static final String NOWPLAYING_PLAYER_STATE = "NOWPLAYING_PLAYER_STATE";
@@ -146,7 +152,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 					case AudioManager.AUDIOFOCUS_LOSS:
 						// Lost focus for an unbounded amount of time: stop playback and release media player
 						if (mediaPlayer.isPlaying()) {
-							makeQuickPause();
+							makePause();
 						}
 						break;
 					case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
@@ -283,7 +289,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 					if ((playerState == PLAYER_IS_PLAYING) && (!stopAfterEachFile)) {
 						result = playFile(file);
 					} else if (stopAfterEachFile) {
-						result = waitUserCommandStatPlay(file);
+						result = isWaitUserCommandStartPlay(file);
 					} else {
 						result = moveToFile(file);
 					}
@@ -303,7 +309,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 						if ((playerState == PLAYER_IS_PLAYING) && (!stopAfterEachFile)) {
 							result = playFile(file);
 						} else if (stopAfterEachFile) {
-							result = waitUserCommandStatPlay(file);
+							result = isWaitUserCommandStartPlay(file);
 						} else {
 							result = moveToFile(file);
 						}
@@ -331,7 +337,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 						if ((playerState == PLAYER_IS_PLAYING) && (!stopAfterEachFile)) {
 							result = playFile(file);
 						} else if (stopAfterEachFile) {
-							result = waitUserCommandStatPlay(file);
+							result = isWaitUserCommandStartPlay(file);
 						} else {
 							result = moveToFile(file);
 						}
@@ -344,8 +350,6 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 				}
 				//probably it was the last file - move to it and make pause, but keep do it only if player was paused
 				if ((currentFilePos >= lastFilePos) && (pathPlayingList.size() > 0) && (!mediaPlayer.isPlaying())) {
-
-					//stopForeground(true); //TODO: replace with separate UI module like "makePause"
 					File file = new File(pathPlayingList.get(currentFilePos));
 					boolean result;
 					result = moveToFile(file);
@@ -364,7 +368,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 					if ((playerState == PLAYER_IS_PLAYING) && (!stopAfterEachFile)) {
 						result = playFile(file);
 					} else if (stopAfterEachFile) {
-						result = waitUserCommandStatPlay(file);
+						result = isWaitUserCommandStartPlay(file);
 					} else {
 						result = moveToFile(file);
 					}
@@ -388,7 +392,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 						if ((playerState == PLAYER_IS_PLAYING) && (!stopAfterEachFile)) {
 							result = playFile(file);
 						} else if (stopAfterEachFile) {
-							result = waitUserCommandStatPlay(file);
+							result = isWaitUserCommandStartPlay(file);
 						} else {
 							result = moveToFile(file);
 						}
@@ -422,8 +426,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 				registerAudioNoisyFilter();
 				mediaPlayer.start();
 				playerState = 1;
-				//TODO: replace with actual notification
-				foregroundNotification("Playing: ", file.getName());  // TODO text to res
+				foregroundNotification("", file.getName());
 				sendIntentToSPActivity(file.getAbsolutePath(), true, playerState); //nowplaying haven't been changed, but this action makes activity to refresh scrollbar and song time
 
 			} else {
@@ -451,11 +454,8 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 				mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(file.getAbsolutePath()));
 				mediaPlayer.prepare();
 				currentFilePos = pathPlayingList.lastIndexOf(file.getPath());
-
 				playerState = PLAYER_INITIALIZED_PAUSED;
 				sendIntentToSPActivity(file.getAbsolutePath(), false, playerState);
-
-
 				return true;
 			} catch (IOException e) {
 				Log.e(TAG, e.getMessage(), e);
@@ -469,7 +469,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 	/**
 	 * To be called if 'checkboxStopAfterEachFile' mode is true
 	 */
-	public boolean waitUserCommandStatPlay(File file) {
+	public boolean isWaitUserCommandStartPlay(File file) {
 		if (moveToFile(file)) {
 			unregisterAudioNoisyFilter();//to ensure that it was previously unregistered
 			playerState = PLAYER_INITIALIZED_PAUSED;
@@ -487,7 +487,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 			registerAudioNoisyFilter();
 			mediaPlayer.start();
 			playerState = PLAYER_IS_PLAYING;
-			foregroundNotification("Playing: ", file.getName());    // TODO res
+			foregroundNotification("", file.getName());
 			sendIntentToSPActivity(file.getAbsolutePath(), false, playerState);
 			currentFilePos = pathPlayingList.lastIndexOf(file.getPath());
 			return true;
@@ -513,12 +513,12 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		}
 	}
 
-	public void makeQuickPause() {
+	public void makePause() {
 		unregisterAudioNoisyFilter();
 		mediaPlayer.pause();
 		playerState = PLAYER_INITIALIZED_PAUSED;
 		sendIntentToSPActivity(pathPlayingList.get(currentFilePos), true, playerState);
-		stopForeground(true);
+        foregroundNotification("", new File(pathPlayingList.get(currentFilePos)).getName());
 		PlayerState.saveState(this.getApplicationContext(), this);
 	}
 
@@ -587,7 +587,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 	}
 
 	private void sendIntentToSPActivity(String filePath, boolean playCurrent, int state) {
-		Intent intent = new Intent(NOWPLAYING);
+		Intent intent = new Intent(ACTION_NOWPLAYING);
 		intent.putExtra(NOWPLAYING_FILEPATH, filePath);
 		intent.putExtra(NOWPLAYING_PLAY_CURRENT, playCurrent);
 		intent.putExtra(NOWPLAYING_PLAYER_STATE, state);
@@ -596,18 +596,46 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 
 	public void foregroundNotification(String textStatus, String textFilename) {
 
-		PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
-				new Intent(getApplicationContext(), SimplePlayerActivity.class),
-				PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pIntent =  PendingIntent.getActivity(getApplicationContext(), 0,
+                new Intent(getApplicationContext(), SimplePlayerActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Notification notification = new Notification();
-		notification.contentIntent = pi;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_start_simpleplayer)
+                        // Large icon won't be available on API<11 devices
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setContentText(textStatus + textFilename)
+                .setTicker(textStatus + textFilename)
+                        // Set PendingIntent into Notification
+                .setContentIntent(pIntent);
 
-		notification.tickerText = textFilename;
-		notification.icon = R.drawable.ic_start_simpleplayer;
-		notification.setLatestEventInfo(getApplicationContext(), getResources().getString(R.string.app_name),
-				textStatus + textFilename, pi);
-		startForeground(NOTIFY_PLAYING, notification);
+        // TODO Set RemoteViews into Notification and image
+
+        Intent movePrev = new Intent(ACTION_FROM_NOTIF_PREV);
+        PendingIntent pendingPrevIntent = PendingIntent.getBroadcast(this, 0, movePrev, 0);
+        builder.addAction(R.drawable.ic_media_previous, null, pendingPrevIntent);
+
+        if (playerState > 0) {
+            Intent pause = new Intent(ACTION_FROM_NOTIF_PAUSE);
+            PendingIntent pendingPauseIntent = PendingIntent.getBroadcast(this, 0, pause, 0);
+            builder.addAction(R.drawable.ic_media_pause, null, pendingPauseIntent);
+        } else {
+            Intent play = new Intent(ACTION_FROM_NOTIF_PLAY);
+            PendingIntent pendingPlayIntent = PendingIntent.getBroadcast(this, 0, play, 0);
+            builder.addAction(R.drawable.ic_media_play, null, pendingPlayIntent);
+        }
+        Intent moveNext = new Intent(ACTION_FROM_NOTIF_NEXT);
+        PendingIntent pendingNextIntent = PendingIntent.getBroadcast(this, 0, moveNext, 0);
+        builder.addAction(R.drawable.ic_media_next, null, pendingNextIntent);
+
+        NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Build Notification with Notification Manager
+        notificationmanager.notify(NOTIFY_PLAYING, builder.build());
+
 	}
 
 	public class MusicNoisyIntentReceiver extends BroadcastReceiver {
@@ -615,7 +643,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		public void onReceive(Context ctx, Intent intent) {
 			if (android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
 				if ((mediaPlayer != null) & (mediaPlayer.isPlaying())) {
-					makeQuickPause();
+					makePause();
 				}
 			}
 		}
@@ -632,4 +660,9 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		playerState = PLAYER_NOT_READY;
 	}
 
+    public static void cancelAllNotifications(Context ctx) {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) ctx.getSystemService(ns);
+        nMgr.cancelAll();
+    }
 }
