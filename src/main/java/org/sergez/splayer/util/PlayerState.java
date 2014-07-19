@@ -44,13 +44,13 @@ public class PlayerState {
 		editor.commit();
 	}
 
-	public static void saveState(Context context, SimplePlayerService playerServiceWithState) {
+	public static void saveState(SimplePlayerService playerServiceWithState) {
 		PlayerState playerState = new PlayerState();
 		playerState.repeatState = playerServiceWithState.repeatState;
 		playerState.shuffleState = playerServiceWithState.shuffleState;
 		playerState.playerServiceFile = playerServiceWithState.getCurrentlyPlayingFilePath();
 		playerState.playerServiceProgress = playerServiceWithState.getCurrentPosition();
-		saveState(context, playerState);
+		saveState(playerServiceWithState, playerState);
 	}
 
 	private PlayerState() {

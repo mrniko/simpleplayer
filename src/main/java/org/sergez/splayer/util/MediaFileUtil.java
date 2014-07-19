@@ -26,17 +26,16 @@ public class MediaFileUtil {
     String[] projection = {
         MediaStore.Audio.Media.ARTIST,
         MediaStore.Audio.Media.TITLE,
-        MediaStore.Audio.Media.DURATION,
     };
     Uri uri = MediaStore.Audio.Media.getContentUriForPath(file.getAbsolutePath());
     Cursor cursor = context.getContentResolver().query(uri, projection,
         selection, selectionArgs, null);
 
     if ((cursor != null) && (cursor.moveToFirst())) {
-      result = new MediaFileData(cursor.getString(0), cursor.getString(1), cursor.getString(2));
+      result = new MediaFileData(cursor.getString(0), cursor.getString(1));
     } else {
       Log.e(TAG, "Cursor is null or empty for file" + file.getAbsolutePath());
-      result = new MediaFileData("", "", "0");
+      result = new MediaFileData("", "");
     }
     cursor.close();
     return result;

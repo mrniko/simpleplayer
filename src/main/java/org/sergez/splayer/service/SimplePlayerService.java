@@ -145,6 +145,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
             unregisterReceiver(notificationActionIntentReceiver);
         }
 		releasePlayer();
+        cancelAllNotifications(this);
 		super.onDestroy();
 	}
 
@@ -206,7 +207,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnErrorListener(this);
 		mediaPlayer.setOnCompletionListener(this);
-		mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+		mediaPlayer.setWakeMode(this, PowerManager.PARTIAL_WAKE_LOCK);
 
 		AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		audioManager.requestAudioFocus(afChangeListener,
@@ -466,7 +467,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		if (FileFormat.acceptableFormat(file.getName())) {
 			try {
 				mediaPlayer.reset();
-				mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(file.getAbsolutePath()));
+				mediaPlayer.setDataSource(this, Uri.parse(file.getAbsolutePath()));
 				mediaPlayer.prepare();
 				currentFilePos = pathPlayingList.lastIndexOf(file.getPath());
 				playerState = PLAYER_INITIALIZED_PAUSED;
@@ -538,7 +539,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		sendIntentToSPActivity(pathPlayingList.get(currentFilePos), true, playerState);
         // needed to show 'play' button in notification:
         foregroundNotification("", new File(pathPlayingList.get(currentFilePos)).getName());
-		PlayerState.saveState(this.getApplicationContext(), this);
+		PlayerState.saveState(this);
 	}
 
 	public void makeAFChangedPause() { //pause when audiofocus has been changed
@@ -614,8 +615,8 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 
 	public void foregroundNotification(String textStatus, String textFilename) {
 
-        PendingIntent pIntent =  PendingIntent.getActivity(getApplicationContext(), 0,
-                new Intent(getApplicationContext(), SimplePlayerActivity.class),
+        PendingIntent pIntent =  PendingIntent.getActivity(this, 0,
+                new Intent(this, SimplePlayerActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)

@@ -6,12 +6,10 @@ package org.sergez.splayer.util;
  *         Time: 14:07
  */
 public class MediaFileData {
-  public String duration;
   public String title;
   public String artist;
 
-  public MediaFileData(String artist, String title, String duration) {
-    this.duration = duration;
+  public MediaFileData(String artist, String title) {
     this.title = title;
     this.artist = artist;
   }

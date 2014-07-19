@@ -134,7 +134,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	public void onStop() {
 		memoryCache.clear();
 		if ((playerService != null) && (playerService.playerState < 1)) { //if player isn't playing
-			PlayerState.saveState(this, playerService);
+			PlayerState.saveState(playerService);
 			unregisterReceiver(playerServiceIntentReceiver); // TODO move to onPause
 			stopService(new Intent(getApplicationContext(), SimplePlayerService.class));
 			doUnbindService();
@@ -438,9 +438,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		if ((playerService != null) && (playerService.getPlayerState() >= 0)) {
 			seekBar.setProgress(playerService.getCurrentPosition());
 			String leftTimeMMSS = "-"
-					+ Utils
-					.timeMSSFormat(playerService.getDuration()
-							- playerService.getCurrentPosition());
+					+ Utils.timeMSSFormat(playerService.getDuration() - playerService.getCurrentPosition());
 			String currentTimeMMSS = Utils
 					.timeMSSFormat(playerService.getCurrentPosition());
 			textCurrentTime.setText(currentTimeMMSS);
@@ -451,7 +449,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 						startPlayProgressUpdater();
 					}
 				};
-				mHandler.postDelayed(notification, 1000);
+				mHandler.postDelayed(notification, 500);
 			} else {
 				seekBar.setProgress(playerService.getCurrentPosition());
 			}
@@ -463,8 +461,12 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		if (playerService.getPlayerState() >= 0) {
 			SeekBar sb = (SeekBar) v;
 			playerService.seekTo(sb.getProgress());
-			String timeMMSS = Utils.timeMSSFormat(playerService.getCurrentPosition());
-			textCurrentTime.setText(timeMMSS);
+            String leftTimeMMSS = "-"
+                    + Utils.timeMSSFormat(playerService.getDuration() - playerService.getCurrentPosition());
+            String currentTimeMMSS = Utils
+                    .timeMSSFormat(playerService.getCurrentPosition());
+            textCurrentTime.setText(currentTimeMMSS);
+            textLeftTime.setText(leftTimeMMSS);
 		}
 	}
 
@@ -635,17 +637,17 @@ public class SimplePlayerActivity extends SherlockListActivity {
 			}
 
 			MediaFileData loadedResult = MediaFileUtil.loadMediaFileData(this, file);
-			String timeLeft = loadedResult.duration;// metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-			if (TextUtils.isEmpty(timeLeft)) {
-				timeLeft = String.valueOf(playerService.getDuration());
-			}
+            // it is better to always take track time from the file and not its metadata
+			String timeLeft = String.valueOf(playerService.getDuration());
 			String timeLeftFormatted = "-" + Utils.timeMMSSformat(timeLeft);
 			seekBar.setMax(Integer.valueOf(timeLeft));
 			seekBar.setProgress(playerService.getCurrentPosition());
 			textLeftTime.setText(timeLeftFormatted);
-			if (loadedResult.artist != null) {
+			if (!TextUtils.isEmpty(loadedResult.artist)) {
 				textArtist.setText(loadedResult.artist);
-			}
+			} else {
+                textArtist.setText("");
+            }
 			if (!TextUtils.isEmpty(loadedResult.title)) {
 				textTrackName.setText(loadedResult.title);
 			} else {
