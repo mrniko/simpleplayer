@@ -111,16 +111,8 @@ public class SimplePlayerActivity extends SherlockListActivity {
                     fileListAdapter.notifyDataSetChanged();
                 } else if (playerState < 0) {// player error
                     // TODO: process player state in playing mode
-                    Log.e(TAG, PlayerServiceIntentReceiver.class.getSimpleName()+ " playerState: " + playerState);
+                    Log.e(TAG, PlayerServiceIntentReceiver.class.getSimpleName() + " playerState: " + playerState);
                 }
-            } else if (SimplePlayerService.ACTION_FROM_NOTIF_NEXT.equals(intent.getAction())){
-                buttonNextClick();
-            } else if (SimplePlayerService.ACTION_FROM_NOTIF_PREV.equals(intent.getAction())){
-                buttonPrevClick();
-            } else if (SimplePlayerService.ACTION_FROM_NOTIF_PAUSE.equals(intent.getAction())){
-                buttonPlayStopClick(true);
-            } else if (SimplePlayerService.ACTION_FROM_NOTIF_PLAY.equals(intent.getAction())) {
-                buttonPlayStopClick(true);
             }
 		}
 	}
@@ -253,7 +245,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 						Utils.moveToFolder(this, parentFilePath, null, true, listData, externalMediaMounted, readInternalMedia);
 					}
 					playerService.setPathPlaying(listData.getCurrentPathPlayableList(), file.getAbsolutePath());
-					if (playerService.moveToFile(file)) {
+					if (playerService.moveToFile(file, true)) {
 						playerService.seekTo(playerState.playerServiceProgress);
 					} else {
 						Log.e(TAG, "Unable move to file: " + file.getAbsolutePath());
@@ -334,9 +326,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 			i.setAction(Intent.ACTION_MAIN);
 			i.addCategory(Intent.CATEGORY_HOME);
 			this.startActivity(i);
-		} else
-		// back button - makes finish the app
-		{
+		} else {
 			super.onBackPressed();
 		}
 	}
@@ -365,10 +355,6 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		// intent to receive data from SimplePlayerService
 		IntentFilter mpFileChangedFilter;
 		mpFileChangedFilter = new IntentFilter(SimplePlayerService.ACTION_NOWPLAYING);
-        mpFileChangedFilter.addAction(SimplePlayerService.ACTION_FROM_NOTIF_NEXT);
-        mpFileChangedFilter.addAction(SimplePlayerService.ACTION_FROM_NOTIF_PAUSE);
-        mpFileChangedFilter.addAction(SimplePlayerService.ACTION_FROM_NOTIF_PLAY);
-        mpFileChangedFilter.addAction(SimplePlayerService.ACTION_FROM_NOTIF_PREV);
 		playerServiceIntentReceiver = new PlayerServiceIntentReceiver();
 		registerReceiver(playerServiceIntentReceiver, mpFileChangedFilter);
 	}
@@ -509,7 +495,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	}
 
 	private void buttonPrevClick() {
-		String path = playerService.movePrev();
+		String path = playerService.movePrev(true);
 		if (path != null) {
 			if (SERVICE_RESPONSE_FALSE.equals(path)) {
 				showFileCantBePlayed(this, playerService.getCurrentlyPlayingFilePath());
@@ -526,7 +512,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	}
 
 	private void buttonNextClick() {
-		String path = playerService.moveNext();
+		String path = playerService.moveNext(true);
 		if (path != null) {
 			if (SERVICE_RESPONSE_FALSE.equals(path)) {
 				showFileCantBePlayed(this, playerService.getCurrentlyPlayingFilePath());
@@ -597,8 +583,8 @@ public class SimplePlayerActivity extends SherlockListActivity {
 
 	private void startPlayingFile(File file) {
 		playerService.setPathPlaying(listData.getCurrentPathPlayableList(), file.getAbsolutePath());
-		boolean waitUserCommandStatPlay = uiStateController.isPlayOnlyWhenButtonPressed();
-		if (waitUserCommandStatPlay) {
+		boolean waitUserCommandStartPlay = uiStateController.isPlayOnlyWhenButtonPressed();
+		if (waitUserCommandStartPlay) {
 			if (!playerService.isWaitUserCommandStartPlay(file)) {
 				showFileCantBePlayed(this, file);
 				hideTimesAndSeekInfo();
