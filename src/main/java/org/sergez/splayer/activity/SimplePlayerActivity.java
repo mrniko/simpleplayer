@@ -76,7 +76,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 		setContentView(R.layout.main);
 		initComponents();
-		startPlayerServiceAndReceiver();
+		startPlayerServiceAndReceiver(); // TODO move receivers to onResume()
 	}
 
     @Override
@@ -143,7 +143,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		memoryCache.clear();
 		if ((playerService != null) && (playerService.playerState < 1)) { //if player isn't playing
 			PlayerState.saveState(this, playerService);
-			unregisterReceiver(playerServiceIntentReceiver);
+			unregisterReceiver(playerServiceIntentReceiver); // TODO move to onPause
 			stopService(new Intent(getApplicationContext(), SimplePlayerService.class));
 			doUnbindService();
 			playerService = null;
