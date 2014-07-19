@@ -76,7 +76,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 		setContentView(R.layout.main);
 		initComponents();
-		startPlayerServiceAndReceiver(); // TODO move receivers to onResume()
+		startPlayerService();
 	}
 
     @Override
@@ -135,7 +135,6 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		memoryCache.clear();
 		if ((playerService != null) && (playerService.playerState < 1)) { //if player isn't playing
 			PlayerState.saveState(playerService);
-			unregisterReceiver(playerServiceIntentReceiver); // TODO move to onPause
 			stopService(new Intent(getApplicationContext(), SimplePlayerService.class));
 			doUnbindService();
 			playerService = null;
@@ -148,6 +147,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	public void onPause() {
 		super.onPause();
 		unregisterReceiver(mediaIntentReceiver);
+        unregisterReceiver(playerServiceIntentReceiver);
 	}
 
 	@Override
@@ -196,13 +196,18 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		if (fileListAdapter != null) {
 			fileListAdapter.notifyDataSetChanged();
 		}
+        // intent to receive data from SimplePlayerService
+        IntentFilter mpFileChangedFilter;
+        mpFileChangedFilter = new IntentFilter(SimplePlayerService.ACTION_NOWPLAYING);
+        playerServiceIntentReceiver = new PlayerServiceIntentReceiver();
+        registerReceiver(playerServiceIntentReceiver, mpFileChangedFilter);
 	}
 
 	@Override
 	public void onRestart() {
 		super.onRestart();
 		if (playerService == null) {
-			startPlayerServiceAndReceiver();
+			startPlayerService();
 			//all other things for player init we have to do in onServiceConnected()
 		}
 	}
@@ -339,25 +344,14 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 	}
 
-	private void startPlayerServiceAndReceiver() {
+	private void startPlayerService() {
 		Intent music = new Intent();
 		music.setAction(SimplePlayerService.ACTION_START);
 		music.setClass(this, SimplePlayerService.class);
 		startService(music);
 		doBindService();
-		registerIntentReceivers();
 	}
 
-	/**
-	 * Have to be called only when playerService is binded
-	 */
-	private void registerIntentReceivers() {
-		// intent to receive data from SimplePlayerService
-		IntentFilter mpFileChangedFilter;
-		mpFileChangedFilter = new IntentFilter(SimplePlayerService.ACTION_NOWPLAYING);
-		playerServiceIntentReceiver = new PlayerServiceIntentReceiver();
-		registerReceiver(playerServiceIntentReceiver, mpFileChangedFilter);
-	}
 
 	private void initComponents() {
 		listData = new ListData();
@@ -654,9 +648,9 @@ public class SimplePlayerActivity extends SherlockListActivity {
 				textTrackName.setText(file.getName());
 			}
 		} else {
-			Log.e(TAG, "playerService == null in playFileOperations(File) for file " + file.getAbsolutePath());
-			makeToast(this, getString(R.string.cant_get_info_for_file_or_service_err) + ": " + file.getAbsolutePath());
-			buttonPlayStop.setText(R.string.button_pause);
+//			Log.e(TAG, "playerService == null in playFileOperations(File) for file " + file.getAbsolutePath());
+//			makeToast(this, getString(R.string.cant_get_info_for_file_or_service_err) + ": " + file.getAbsolutePath());
+			buttonPlayStop.setText(R.string.button_play);
 		}
 	}
 
