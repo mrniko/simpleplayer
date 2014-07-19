@@ -98,6 +98,8 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 
 	public void onCreate() {
 		super.onCreate();
+        // helps to remove all notifications when app process was killed by system and then service was restored
+        cancelAllNotifications(this);
 	}
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -539,7 +541,6 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 			mediaPlayer = null;
 		}
 		playerState = PLAYER_IS_NULL;
-		stopForeground(true);
 	}
 
 	public boolean isPlaying() {

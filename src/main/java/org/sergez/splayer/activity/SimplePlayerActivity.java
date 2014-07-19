@@ -111,7 +111,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
                     fileListAdapter.notifyDataSetChanged();
                 } else if (playerState < 0) {// player error
                     // TODO: process player state in playing mode
-                    Log.e(TAG, "PlayerServiceIntentReceiver playerState: " + playerState);
+                    Log.e(TAG, PlayerServiceIntentReceiver.class.getSimpleName()+ " playerState: " + playerState);
                 }
             } else if (SimplePlayerService.ACTION_FROM_NOTIF_NEXT.equals(intent.getAction())){
                 buttonNextClick();
