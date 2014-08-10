@@ -32,9 +32,9 @@
                     android:title="Send feedback">
             </item>
             <item
-                    android:id="@+id/menu_exit"
+                    android:id="@+id/menu_donate"
                     android:showAsAction="always"
-                    android:title="@string/menu_exit">
+                    android:title="@string/menu_donate">
             </item>
         </menu>
     </item>

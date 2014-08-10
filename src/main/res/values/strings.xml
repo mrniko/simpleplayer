@@ -9,8 +9,9 @@
     <string name="menu_about">About</string>
     <string name="time_str">--:--</string>
     <string name="menu_file_props">File properties</string>
-    <string name="menu_exit">Exit</string>
+    <string name="menu_donate">Donate</string>
     <string name="preferences_activity_name">Settings</string>
+    <string name="donation_activity_name">Donation</string>
     <string name="no_data">No data. Please check memory card or restart application</string>
     <string name="track_name">TrackName</string>
     <string name="artist">Artist</string>

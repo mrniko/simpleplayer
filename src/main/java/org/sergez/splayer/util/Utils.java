@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import org.sergez.splayer.R;
+import org.sergez.splayer.activity.DonationActivity;
 import org.sergez.splayer.activity.ListData;
 import org.sergez.splayer.activity.PreferencesActivity;
 import org.sergez.splayer.activity.SimplePlayerActivity;
@@ -112,8 +113,9 @@ public final class Utils {
 							.setPositiveButton(R.string.ok, null).show();
                     return true;
 				}
-			case R.id.menu_exit:
-				spActivity.finish();
+			case R.id.menu_donate:
+                Intent donationActivityIntent = new Intent(spActivity, DonationActivity.class);
+                spActivity.startActivity(donationActivityIntent);
 				return true;
 			case R.id.menu_repeat:
 				DialogUtils.showDialogRepeatChoice(spActivity, playerService, menuItem);
