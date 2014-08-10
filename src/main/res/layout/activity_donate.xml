@@ -40,4 +40,14 @@
             android:text="Donate $20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+    <TextView
+            android:id="@+id/text_sorry_donation_na"
+            android:text="Sorry, donation is not available for your device"
+            android:textStyle="italic"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 </LinearLayout>
