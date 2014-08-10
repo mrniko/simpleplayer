@@ -77,7 +77,12 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		setContentView(R.layout.main);
 		initComponents();
 		startPlayerService();
-	}
+        if (!PrefsController.isDonationStoppedToShow(this)) {
+            if (PrefsController.isTimeToShowDonationRequest(this)) {
+                Utils.showDonationDialog(this);
+            }
+        }
+    }
 
     @Override
     public void onNewIntent(Intent intent){

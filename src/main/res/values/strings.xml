@@ -57,4 +57,5 @@
 	<string name="cant_get_info_for_file_medialib">"Can't get information about file from MediaLibrary"</string>
 	<string name="cant_get_info_for_file_or_service_err">"Can't get information about file or service error"</string>
 	<string name="end_of_the_playlist_reached">The end of the playlist has been reached</string>
+    <string name="do_you_like_app_donate">Do you find this application useful? Support it\'s development by sending a donation</string>
 </resources>

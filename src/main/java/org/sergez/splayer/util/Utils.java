@@ -342,4 +342,19 @@ public final class Utils {
 		Toast.makeText(context, text, Toast.LENGTH_LONG).show();
 	}
 
+    public final static void showDonationDialog(final Context context) {
+        new AlertDialog.Builder(context)
+                .setMessage(R.string.do_you_like_app_donate)
+                .setCancelable(true)
+                .setNegativeButton("Not yet", null)
+                .setPositiveButton("Of course!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent donationActivityIntent = new Intent(context, DonationActivity.class);
+                        context.startActivity(donationActivityIntent);
+                    }
+                }
+                ).create().show();
+    }
+
 }

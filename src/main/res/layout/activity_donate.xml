@@ -7,7 +7,7 @@
               android:layout_height="match_parent">
 
     <TextView
-            android:text="Do you find this application useful? Support it's development by sending a donation!"
+            android:text="@string/do_you_like_app_donate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     <TextView

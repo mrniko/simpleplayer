@@ -10,6 +10,8 @@ public final class Constants {
 
 	}
 
+    public final static long INTERVAL_DAYS_SHOW_DONATE =  86400000L * 10;
+
 	public final static String ROOT_PATH = "/";
 
 	public final static String SERVICE_RESPONSE_FALSE = "false";

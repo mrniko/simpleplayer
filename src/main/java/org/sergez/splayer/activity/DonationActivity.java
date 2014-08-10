@@ -14,6 +14,7 @@ import org.sergez.splayer.inappbilling.IabResult;
 import org.sergez.splayer.inappbilling.Inventory;
 import org.sergez.splayer.inappbilling.Purchase;
 import org.sergez.splayer.util.Constants;
+import org.sergez.splayer.util.PrefsController;
 
 import static org.sergez.splayer.util.Utils.makeToast;
 
@@ -80,6 +81,7 @@ public class DonationActivity extends Activity {
                     buttonDonateS20.setEnabled(false);
                     buttonDonateS5.setEnabled(false);
                     Log.e(TAG, "In-app Billing setup failed: " + result);
+                    PrefsController.setDonationStoppedToShow(DonationActivity.this, true);
                 } else {
                     donationNa.setVisibility(View.GONE);
                     Log.d(TAG, "In-app Billing is set up OK");
@@ -151,6 +153,7 @@ public class DonationActivity extends Activity {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (result.isSuccess()) {
                 showDialog("Thank you!", "Donation completed");
+                PrefsController.setDonationStoppedToShow(DonationActivity.this, true);
             } else {
                 showDialog("Error", result.getMessage());
                 Log.e(TAG, "Error" + result.getMessage());
@@ -162,13 +165,15 @@ public class DonationActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         if (mHelper != null) {
-            mHelper.dispose();
+            if (donationNa.getVisibility() != View.VISIBLE) {// edge case when IAB wasn't registered
+                mHelper.dispose();
+            }
         }
         mHelper = null;
     }
 
 
-    public void showDialog(String title, String message){
+    public void showDialog(String title, String message) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
