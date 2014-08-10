@@ -22,7 +22,8 @@ I published this project on Google Play at 2012 and it was my first Android app.
 
 Screenshots
 ========
-
+![Screenshot](/screenshots/screen1.png?raw=true "")
+![Screenshot](/screenshots/screen2.png?raw=true "")
 
 How to build
 ========
