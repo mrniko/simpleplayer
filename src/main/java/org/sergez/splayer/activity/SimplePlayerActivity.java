@@ -214,7 +214,10 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		if (playerService == null) {
 			startPlayerService();
 			//all other things for player init we have to do in onServiceConnected()
-		}
+		} else {
+            playFileOperations(playerService.getCurrentlyPlayingFilePath());
+            updateTrackTime();
+        }
 	}
 
 	@Override
@@ -433,15 +436,19 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 	}
 
+    private void updateTrackTime(){
+        String leftTimeMMSS = "-"
+                + Utils.timeMSSFormat(playerService.getDuration() - playerService.getCurrentPosition());
+        String currentTimeMMSS = Utils
+                .timeMSSFormat(playerService.getCurrentPosition());
+        textCurrentTime.setText(currentTimeMMSS);
+        textLeftTime.setText(leftTimeMMSS);
+    }
+
 	public void startPlayProgressUpdater() {
 		if ((playerService != null) && (playerService.getPlayerState() >= 0)) {
 			seekBar.setProgress(playerService.getCurrentPosition());
-			String leftTimeMMSS = "-"
-					+ Utils.timeMSSFormat(playerService.getDuration() - playerService.getCurrentPosition());
-			String currentTimeMMSS = Utils
-					.timeMSSFormat(playerService.getCurrentPosition());
-			textCurrentTime.setText(currentTimeMMSS);
-			textLeftTime.setText(leftTimeMMSS);
+            updateTrackTime();
 			if (playerService.isPlaying()) {
 				Runnable notification = new Runnable() {
 					public void run() {
@@ -460,12 +467,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		if (playerService.getPlayerState() >= 0) {
 			SeekBar sb = (SeekBar) v;
 			playerService.seekTo(sb.getProgress());
-            String leftTimeMMSS = "-"
-                    + Utils.timeMSSFormat(playerService.getDuration() - playerService.getCurrentPosition());
-            String currentTimeMMSS = Utils
-                    .timeMSSFormat(playerService.getCurrentPosition());
-            textCurrentTime.setText(currentTimeMMSS);
-            textLeftTime.setText(leftTimeMMSS);
+            updateTrackTime();
 		}
 	}
 
