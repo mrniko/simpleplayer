@@ -18,5 +18,4 @@ public final class Constants {
 
     public final static String DONATION_PUBLIC_KEY = HIDDEN
 
-
 }
