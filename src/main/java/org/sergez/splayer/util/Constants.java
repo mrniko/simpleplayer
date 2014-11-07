@@ -16,6 +16,6 @@ public final class Constants {
 
 	public final static String SERVICE_RESPONSE_FALSE = "false";
 
-    public final static String DONATION_PUBLIC_KEY = HIDDEN
+    public final static String DONATION_PUBLIC_KEY = "";//HIDDEN
 
 }
