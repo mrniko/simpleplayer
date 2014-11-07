@@ -11,5 +11,9 @@ android:
 
     # The SDK version used to compile your project
     - android-19
-  install:
+
+    before_install:
+    - chmod +x gradlew
+
+    install:
     - ./gradlew assemble
