@@ -16,6 +16,12 @@ repositories {
 }
 
 android {
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+    }
     compileSdkVersion 19
     buildToolsVersion "19.1.0"
     defaultConfig {
