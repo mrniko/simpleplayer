@@ -33,10 +33,12 @@ android {
         release {
             runProguard true
             proguardFile 'proguard.cfg'
+            testCoverageEnabled true
         }
         debug {
             runProguard false
             debuggable true
+            testCoverageEnabled true
         }
     }
     sourceSets {
@@ -94,10 +96,48 @@ dependencies {
     androidTestCompile 'com.squareup:fest-android:1.0.+'
 }
 
-apply plugin: 'idea'
+// // we don't need it any more
+//
+// apply plugin: 'idea'
+//
+//idea {
+//    module {
+//        testOutputDir = file('build/test-classes/debug')
+//    }
+//}
 
-idea {
-    module {
-        testOutputDir = file('../build/test-classes/debug')
+/* jacoco config from http://raptordigital.blogspot.com/2014/08/code-coverage-reports-using-robolectric.html */
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
+
+def coverageSourceDirs = [
+        'src/main/java'
+]
+
+task jacocoTestReport(type:JacocoReport, dependsOn: "testDebug") {
+    group = "Reporting"
+
+    description = "Generate JaCoCo coverage reports"
+
+    classDirectories = fileTree(
+            dir: 'build/intermediates/classes',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*']
+    )
+
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('build/jacoco/testDebug.exec')
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
     }
+
 }
