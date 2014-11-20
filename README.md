@@ -1,6 +1,7 @@
 Simple Player
 ===========
 
+[![Build Status](https://travis-ci.org/sergiiz/simpleplayer.svg?branch=master)](https://travis-ci.org/sergiiz/simpleplayer)
 
 Simple Player is a tiny audio player to play songs shown by folders.
 Features:
