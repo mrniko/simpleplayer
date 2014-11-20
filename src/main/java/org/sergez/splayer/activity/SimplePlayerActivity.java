@@ -62,9 +62,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	private PlayerServiceIntentReceiver playerServiceIntentReceiver;
 	private MediaIntentReceiver mediaIntentReceiver;
 
-	// accessed from PlayerFileAdapter:
-	MemoryImagesCache memoryCache;
-	ListData listData = null;
+	ListData listData;
 	UIStateController uiStateController;
 	SimplePlayerService playerService;
 
@@ -137,7 +135,6 @@ public class SimplePlayerActivity extends SherlockListActivity {
 
 	@Override
 	public void onStop() {
-		memoryCache.clear();
 		if ((playerService != null) && (playerService.playerState < 1)) { //if player isn't playing
 			PlayerState.saveState(playerService);
 			stopService(new Intent(getApplicationContext(), SimplePlayerService.class));
@@ -363,8 +360,6 @@ public class SimplePlayerActivity extends SherlockListActivity {
 
 	private void initComponents() {
 		listData = new ListData();
-
-		memoryCache = new MemoryImagesCache();
 		textPath = (TextView) findViewById(R.id.text_path);
 		buttonPlayStop = (Button) findViewById(R.id.button_playstop);
 		buttonPlayStop.setOnClickListener(new OnClickListener() {
@@ -678,7 +673,6 @@ public class SimplePlayerActivity extends SherlockListActivity {
 	}
 
 	private void onMediaReady() {
-		memoryCache.clear();
 		externalMediaMounted = true;
 		if (readInternalMedia) {
 			listData.setRoot(ROOT_PATH);

@@ -9,7 +9,7 @@ if [ ! -e $DEPS ]; then
   echo y | android update sdk -u -a -t android-19 &&
   echo y | android update sdk -u -a -t platform-tools &&
   echo y | android update sdk -u -a -t extra &&
-  echo y | android update sdk -u -a -t build-tools-19.1.0 &&
+  echo y | android update sdk -u -a -t build-tools-21.1.1 &&
   echo y | android update sdk -u -a -t addon-google_apis-google-19 &&
   touch $DEPS
 fi

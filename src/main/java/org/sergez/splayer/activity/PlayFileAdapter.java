@@ -1,8 +1,9 @@
 package org.sergez.splayer.activity;
 
+import android.content.ContentUris;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import org.sergez.splayer.R;
 import org.sergez.splayer.util.DurationAlbumID;
 import org.sergez.splayer.util.FileFormat;
-import org.sergez.splayer.util.GetAlbumArtTask;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -80,21 +81,10 @@ public class PlayFileAdapter extends ArrayAdapter<String> {
 					//setBackgroundDrawable - otherwise not working on Android 2.*
 					holder.relativeLayoutRow.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.listview_bg_selector));
 				}
-				// Load image from path or from cache
-				Bitmap bmp;
-				if (simplePlayerActivity.memoryCache.containsKey(albumArtID)) {
-					bmp = simplePlayerActivity.memoryCache.get(albumArtID);
-					if (bmp != null) {
-						holder.imageIcon.setImageBitmap(bmp);
-					} else {
-						holder.imageIcon.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_launcher));
-					}
-				} else {
-					//upload image or mock in separate thread
-					GetAlbumArtTask albumArtTask = new GetAlbumArtTask(getContext(), Long.parseLong(albumArtID), simplePlayerActivity.memoryCache, holder.imageIcon);
-					Thread t = new Thread(albumArtTask);
-					t.start();
-				}
+                Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+                Uri uri = ContentUris.withAppendedId(sArtworkUri, Long.parseLong(albumArtID));
+                Picasso.with(getContext()).load(uri).placeholder(R.drawable.ic_launcher)
+                        .error(R.drawable.ic_launcher).into(holder.imageIcon);
 				holder.textTop.setTypeface(null, Typeface.NORMAL);
 			} else { // folder
 				// check if this folder is folder where now file
