@@ -10,4 +10,4 @@ dependencies:
 test:
   override:
   - chmod +x gradlew
-  - ./gradlew test
+  - ./gradlew assemble test
