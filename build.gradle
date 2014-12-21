@@ -3,12 +3,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.+'
+        classpath 'com.android.tools.build:gradle:0.14.2'
         classpath 'org.robolectric:robolectric-gradle-plugin:0.13.+'
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'robolectric'
 
 repositories {
@@ -33,12 +33,12 @@ android {
         release {
             runProguard true
             proguardFile 'proguard.cfg'
-            testCoverageEnabled true
+            testCoverageEnabled false
         }
         debug {
             runProguard false
             debuggable true
-            testCoverageEnabled true
+            testCoverageEnabled false
         }
     }
     sourceSets {
@@ -69,9 +69,9 @@ dependencies {
     androidTestCompile files('lib/espresso-1.1.jar', 'lib/testrunner-1.1.jar', 'lib/testrunner-runtime-1.1.jar')
     androidTestCompile 'org.hamcrest:hamcrest-integration:1.1',
             'org.hamcrest:hamcrest-core:1.1',
-            'org.hamcrest:hamcrest-library:1.1'
-    //'com.google.guava:guava:14.0.1', // guava is already bundled in dagger 1.2
-    //'com.squareup.dagger:dagger:1.1.0' //use dagger in 'compile' section
+            'org.hamcrest:hamcrest-library:1.1',
+            'com.google.guava:guava:14.0.1',
+            'com.squareup.dagger:dagger:1.1.0'
     androidTestCompile('junit:junit:4.11') {
         exclude module: 'hamcrest-core'
     }
@@ -96,16 +96,6 @@ dependencies {
     }
     androidTestCompile 'com.squareup:fest-android:1.0.+'
 }
-
-// // we don't need it any more
-//
-// apply plugin: 'idea'
-//
-//idea {
-//    module {
-//        testOutputDir = file('build/test-classes/debug')
-//    }
-//}
 
 /* jacoco config from http://raptordigital.blogspot.com/2014/08/code-coverage-reports-using-robolectric.html */
 apply plugin: 'jacoco'
