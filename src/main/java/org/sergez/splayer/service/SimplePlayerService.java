@@ -1,5 +1,6 @@
 package org.sergez.splayer.service;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -19,7 +20,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 import org.sergez.splayer.R;
 import org.sergez.splayer.activity.SimplePlayerActivity;
 import org.sergez.splayer.enums.RepeatState;
@@ -121,7 +121,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		Log.e(TAG, "MP error :: what: " + what + ", extra: " + extra);
-		Toast.makeText(this, "Simple Player MP error", Toast.LENGTH_LONG).show();
+		makeToast(this, "Simple Player MP error");
 		stopForeground(true);
 		if (mediaPlayer != null) {
 			releasePlayer();
@@ -460,7 +460,6 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 	 * @return
 	 */
 	public boolean moveToFile(File file, boolean fromNotification) {
-		stopForeground(true);
 		if (mediaPlayer == null) {
 			return false;
 		}
@@ -578,7 +577,6 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 		this.pathPlayingList.addAll(pathPlaying);
 		lastFilePos = this.pathPlayingList.size() - 1;
 		processSetPathPlayingShuffleFolder(selectedFilepath);
-		//updateShuffleOnPathPlayingChanged();
 	}
 
 	public int getDuration() {
@@ -651,10 +649,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
         PendingIntent pendingNextIntent = PendingIntent.getBroadcast(this, 0, moveNext, 0);
         builder.addAction(R.drawable.ic_media_next, null, pendingNextIntent);
 
-        NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Build Notification with Notification Manager
-        notificationmanager.notify(NOTIFY_PLAYING, builder.build());
-
+		startForeground(NOTIFY_PLAYING, builder.build());
 	}
 
 	public class MusicNoisyIntentReceiver extends BroadcastReceiver {
