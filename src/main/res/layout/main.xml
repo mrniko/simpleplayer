@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:animateLayoutChanges="true"
         android:layout_above="@+id/layout_trackinfo"
         android:orientation="vertical" >
         

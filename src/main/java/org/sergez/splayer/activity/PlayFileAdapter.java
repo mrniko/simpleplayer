@@ -44,7 +44,7 @@ public class PlayFileAdapter extends ArrayAdapter<String> {
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rowView = vi.inflate(R.layout.row, null);
 			holder = new ViewHolder();
-			holder.imageIcon = (ImageView) rowView.findViewById(R.id.icon);
+			holder.imageIcon = (ImageView) rowView.findViewById(R.id.thumbnail);
 			holder.imagePlaying = (ImageView) rowView.findViewById(R.id.image_playing);
 			holder.textDuration = (TextView) rowView.findViewById(R.id.text_track_duration);
 			holder.textTop = (TextView) rowView.findViewById(R.id.text_toptext);
