@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.animation.TranslateAnimation;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
@@ -141,7 +140,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 			doUnbindService();
 			playerService = null;
 		}
-
+		mHandler.removeCallbacksAndMessages(null);
 		super.onStop();
 	}
 
@@ -532,14 +531,9 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		seekBar.setVisibility(View.GONE);
 	}
 
-	private Runnable mAnimatePathText = new Runnable() {
+	private Runnable mHidePathText = new Runnable() {
 		public void run() {
-			TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -textPath.getHeight() * 0.82f);
-			animation.setDuration(1); // animation disabled
-			animation.setFillAfter(false);
-			AnimationMakeGoneListener listener = new AnimationMakeGoneListener(textPath, SimplePlayerActivity.this);
-			animation.setAnimationListener(listener);
-			textPath.startAnimation(animation);
+			textPath.setVisibility(View.GONE);
 		}
 	};
 
@@ -550,8 +544,8 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		ListView myList = (ListView) findViewById(android.R.id.list);
 		myList.setAdapter(fileListAdapter);
 
-		mHandler.removeCallbacks(mAnimatePathText);
-		mHandler.postDelayed(mAnimatePathText, 4000);
+		mHandler.removeCallbacks(mHidePathText);
+		mHandler.postDelayed(mHidePathText, 4000);
 	}
 
 	@Override
