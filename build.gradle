@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.2'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'org.robolectric:robolectric-gradle-plugin:0.13.+'
     }
 }
@@ -31,12 +31,12 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFile 'proguard.cfg'
             testCoverageEnabled false
         }
         debug {
-            runProguard false
+            minifyEnabled false
             debuggable true
             testCoverageEnabled false
         }
