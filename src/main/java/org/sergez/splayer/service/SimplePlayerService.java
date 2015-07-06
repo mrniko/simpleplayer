@@ -634,20 +634,20 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 
         Intent movePrev = new Intent(ACTION_FROM_NOTIF_PREV);
         PendingIntent pendingPrevIntent = PendingIntent.getBroadcast(this, 0, movePrev, 0);
-        builder.addAction(R.drawable.ic_media_previous, null, pendingPrevIntent);
+        builder.addAction(R.drawable.ic_media_previous, "", pendingPrevIntent);
 
         if (playerState > 0) {
             Intent pause = new Intent(ACTION_FROM_NOTIF_PAUSE);
             PendingIntent pendingPauseIntent = PendingIntent.getBroadcast(this, 0, pause, 0);
-            builder.addAction(R.drawable.ic_media_pause, null, pendingPauseIntent);
+            builder.addAction(R.drawable.ic_media_pause, "", pendingPauseIntent);
         } else {
             Intent play = new Intent(ACTION_FROM_NOTIF_PLAY);
             PendingIntent pendingPlayIntent = PendingIntent.getBroadcast(this, 0, play, 0);
-            builder.addAction(R.drawable.ic_media_play, null, pendingPlayIntent);
+            builder.addAction(R.drawable.ic_media_play, "", pendingPlayIntent);
         }
         Intent moveNext = new Intent(ACTION_FROM_NOTIF_NEXT);
         PendingIntent pendingNextIntent = PendingIntent.getBroadcast(this, 0, moveNext, 0);
-        builder.addAction(R.drawable.ic_media_next, null, pendingNextIntent);
+        builder.addAction(R.drawable.ic_media_next, "", pendingNextIntent);
 
 		startForeground(NOTIFY_PLAYING, builder.build());
 	}
