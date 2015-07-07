@@ -49,7 +49,7 @@
     <string name="folder_cant_read_part1">Folder [</string>
 	<string name="folder_cant_read_part2">"]  can't be read!"</string>
 	<string name="version">Version: </string>
-	<string name="author">"\u00a9 2012 - 2014 Sergii Zhuk, \nKyiv, Ukraine\n\nContact me: sergii.dev@gmail.com"</string>
+	<string name="author">"\u00a9 2012 - 2015 Sergii Zhuk, \nKyiv, Ukraine\n\nContact me: sergii.dev@gmail.com"</string>
 	<string name="about_title">About</string>
 	<string name="media_cant_be_refreshed">"Media files can't be refreshed.\nProbably external storage is unmounted"</string>
 	<string name="refreshing_media">Refreshing media</string>
