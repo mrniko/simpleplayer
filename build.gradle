@@ -1,136 +1,16 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     repositories {
         mavenCentral()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'org.robolectric:robolectric-gradle-plugin:0.13.+'
     }
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'robolectric'
-
-repositories {
-  mavenCentral()
-}
-
-android {
-    packagingOptions {
-        exclude 'LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE'
-    }
-    compileSdkVersion 19
-    buildToolsVersion "21.1.1"
-    defaultConfig {
-        versionCode 43
-        versionName "2.1.6"
-        minSdkVersion 8
-        targetSdkVersion 19
-        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFile 'proguard.cfg'
-            testCoverageEnabled false
-        }
-        debug {
-            minifyEnabled false
-            debuggable true
-            testCoverageEnabled false
-        }
-    }
-    sourceSets {
-        androidTest {
-            setRoot('src/test')
-        }
-    }
-	lintOptions {
-		abortOnError false
-	}
-}
-
-dependencies {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-    }
-
-    dependencies {
-        compile fileTree(dir: 'libs', include: ['*.jar'])
-        compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-        compile 'com.android.support:support-v4:19.+'
-        compile 'com.squareup.picasso:picasso:2.3.3'
-    }
-    // Espresso
-    androidTestCompile files('lib/espresso-1.1.jar', 'lib/testrunner-1.1.jar', 'lib/testrunner-runtime-1.1.jar')
-    androidTestCompile 'org.hamcrest:hamcrest-integration:1.1',
-            'org.hamcrest:hamcrest-core:1.1',
-            'org.hamcrest:hamcrest-library:1.1',
-            'com.google.guava:guava:14.0.1',
-            'com.squareup.dagger:dagger:1.1.0'
-    androidTestCompile('junit:junit:4.11') {
-        exclude module: 'hamcrest-core'
-    }
-    androidTestCompile('org.robolectric:robolectric:2.3') {
-        exclude module: 'classworlds'
-        exclude module: 'maven-artifact'
-        exclude module: 'maven-artifact-manager'
-        exclude module: 'maven-error-diagnostics'
-        exclude module: 'maven-model'
-        exclude module: 'maven-plugin-registry'
-        exclude module: 'maven-profile'
-        exclude module: 'maven-project'
-        exclude module: 'maven-settings'
-        exclude module: 'nekohtml'
-        exclude module: 'plexus-container-default'
-        exclude module: 'plexus-interpolation'
-        exclude module: 'plexus-utils'
-        exclude module: 'wagon-file'
-        exclude module: 'wagon-http-lightweight'
-        exclude module: 'wagon-http-shared'
-        exclude module: 'wagon-provider-api'
-    }
-    androidTestCompile 'com.squareup:fest-android:1.0.+'
-}
-
-/* jacoco config from http://raptordigital.blogspot.com/2014/08/code-coverage-reports-using-robolectric.html */
-apply plugin: 'jacoco'
-
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-}
-
-def coverageSourceDirs = [
-        'src/main/java'
-]
-
-task jacocoTestReport(type:JacocoReport, dependsOn: "testDebug") {
-    group = "Reporting"
-
-    description = "Generate JaCoCo coverage reports"
-
-    classDirectories = fileTree(
-            dir: 'build/intermediates/classes',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*']
-    )
-
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('build/jacoco/testDebug.exec')
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-
+task prepareWrapper(type: Wrapper) {
+    gradleVersion = '2.2'
 }
