@@ -1,5 +1,6 @@
-package org.sergez.splayer.activity;
+package org.sergez.splayer.ui;
 
+import android.app.ListActivity;
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,14 +10,13 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import org.sergez.splayer.util.MediaFileUtil;
 import org.sergez.splayer.util.MediaFileData;
 import org.sergez.splayer.R;
@@ -35,7 +35,7 @@ import static org.sergez.splayer.util.DialogUtils.showFolderCantBeRead;
 import static org.sergez.splayer.util.Utils.makeToast;
 
 
-public class SimplePlayerActivity extends SherlockListActivity {
+public class SimplePlayerActivity {/* extends ListActivity {
 	private static final String TAG = SimplePlayerActivity.class.getSimpleName();
 	private Button buttonPlayStop;
 	private Button buttonNext;
@@ -218,7 +218,7 @@ public class SimplePlayerActivity extends SherlockListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.action_menu, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		menuItemRepeat = menu.findItem(R.id.menu_repeat);
 		menuItemShuffle = menu.findItem(R.id.menu_shuffle);
 		setMenuRepeatShuffleTitlesFromService();
@@ -239,9 +239,9 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		}
 	};
 
-	/**
+	*//**
 	 * Restores last played track position, folder, etc
-	 */
+	 *//*
 	private void restoreLastPlayerState(PlayerState playerState) {
 		//if we're taking stored file after onStop()
 		if ((playerState.playerServiceFile != null) && ((playerState.playerServiceFile.length() > 0))) {
@@ -281,9 +281,9 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		setMenuRepeatShuffleTitlesFromService();
 	}
 
-	/**
+	*//**
 	 * Could be called from init of menu and restore last player state
-	 */
+	 *//*
 	private void setMenuRepeatShuffleTitlesFromService() {
 		if ((menuItemRepeat != null) && (menuItemShuffle != null) && (playerService != null)) {
 			menuItemShuffle.setTitle(getString(R.string.button_and_toast_shuffle_first_part) + " " + playerService.getShuffleState().getLabel());
@@ -598,9 +598,9 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		buttonPlayStop.setText(R.string.button_pause);
 	}
 
-    /**
+    *//**
      *  Remove all notification if player is in pause mode or not ready
-     */
+     *//*
     private void clearNotifications(){
         if((playerService!=null)&&(playerService.playerState<1)){
             SimplePlayerService.cancelAllNotifications(this);
@@ -685,5 +685,5 @@ public class SimplePlayerActivity extends SherlockListActivity {
 		updateFileListAdapter(listData.getCurrentPathShowItems());
 
 	}
-
+*/
 }

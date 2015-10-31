@@ -1,4 +1,4 @@
-package org.sergez.splayer.activity;
+package org.sergez.splayer.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,8 +15,6 @@ import org.sergez.splayer.inappbilling.Inventory;
 import org.sergez.splayer.inappbilling.Purchase;
 import org.sergez.splayer.util.Constants;
 import org.sergez.splayer.util.PrefsController;
-
-import static org.sergez.splayer.util.Utils.makeToast;
 
 /**
  * @author Sergii Zhuk

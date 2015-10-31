@@ -1,4 +1,4 @@
-package org.sergez.splayer.activity;
+package org.sergez.splayer.ui;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -27,11 +27,11 @@ import java.util.Map;
  */
 public class PlayFileAdapter extends ArrayAdapter<String> {
 	private Map<String, DurationAlbumID> itemsMap;
-	private SimplePlayerActivity simplePlayerActivity;
+	private PlayerFragment simplePlayerActivity;
 
-	public PlayFileAdapter(SimplePlayerActivity simplePlayerActivity, int textViewResourceId, Map<String, DurationAlbumID> item) {
-		super(simplePlayerActivity, textViewResourceId, new ArrayList<String>(item.keySet()));
-		this.simplePlayerActivity = simplePlayerActivity;
+	public PlayFileAdapter(PlayerFragment playerFragment, int textViewResourceId, Map<String, DurationAlbumID> item) {
+		super(playerFragment.getActivity(), textViewResourceId, new ArrayList<>(item.keySet()));
+		this.simplePlayerActivity = playerFragment;
 		this.itemsMap = item;
 	}
 

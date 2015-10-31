@@ -1,6 +1,5 @@
 package org.sergez.splayer.service;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -21,7 +20,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import org.sergez.splayer.R;
-import org.sergez.splayer.activity.SimplePlayerActivity;
+import org.sergez.splayer.ui.SimplePlayerActivity;
 import org.sergez.splayer.enums.RepeatState;
 import org.sergez.splayer.enums.ShuffleState;
 import org.sergez.splayer.util.FileFormat;

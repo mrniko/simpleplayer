@@ -1,4 +1,4 @@
-package org.sergez.splayer.activity;
+package org.sergez.splayer.ui;
 
 
 import android.app.Activity;

@@ -4,7 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
+
 import org.sergez.splayer.R;
 import org.sergez.splayer.enums.RepeatState;
 import org.sergez.splayer.enums.ShuffleState;

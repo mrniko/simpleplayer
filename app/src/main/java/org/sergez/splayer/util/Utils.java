@@ -1,5 +1,6 @@
 package org.sergez.splayer.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,14 +10,18 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
-import com.actionbarsherlock.view.MenuItem;
 import org.sergez.splayer.R;
-import org.sergez.splayer.activity.DonationActivity;
-import org.sergez.splayer.activity.ListData;
-import org.sergez.splayer.activity.PreferencesActivity;
-import org.sergez.splayer.activity.SimplePlayerActivity;
+import org.sergez.splayer.ui.ActivityHelper;
+import org.sergez.splayer.ui.DonationActivity;
+import org.sergez.splayer.ui.ListData;
+import org.sergez.splayer.ui.PlayerFragment;
+import org.sergez.splayer.ui.PreferencesActivity;
+import org.sergez.splayer.ui.PreferencesFragment;
+import org.sergez.splayer.ui.SimplePlayerActivity;
 import org.sergez.splayer.service.SimplePlayerService;
 
 import java.io.File;
@@ -49,11 +54,11 @@ public final class Utils {
 		return timeMSSFormat(value);
 	}
 
-	public static boolean menuClick(MenuItem menuItem, SimplePlayerActivity spActivity, SimplePlayerService playerService) {
+	public static boolean menuClick(MenuItem menuItem, PlayerFragment playerFragment, SimplePlayerService playerService) {
+		Activity spActivity = playerFragment.getActivity();
 		switch (menuItem.getItemId()) {
 			case R.id.menu_settings:
-				Intent preferencesActivity = new Intent(spActivity, PreferencesActivity.class);
-				spActivity.startActivity(preferencesActivity);
+				ActivityHelper.navigateTo((AppCompatActivity)spActivity, new PreferencesFragment(), ActivityHelper.getMainActivityContainer());
 				return true;
 			case R.id.menu_file_props:
 				if ((playerService!=null)&&(playerService.playerState >= 0)) {
