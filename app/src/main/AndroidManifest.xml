@@ -26,16 +26,19 @@
             </intent-filter>
 
         </activity>
-<!--        <activity
+        <!-- Separate activity used for prefs because of problems in PreferenceFragment appcompat,
+        see http://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar -->
+        <activity
                 android:name=".ui.PreferencesActivity"
                 android:label="@string/preferences_activity_name"
                 android:configChanges="orientation|screenSize|screenLayout"
+                android:theme="@style/MainActivityStyle"
                 android:parentActivityName="org.sergez.splayer.ui.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="org.sergez.splayer.ui.SimplePlayerActivity"/>
+                    android:value="org.sergez.splayer.ui.MainActivity"/>
         </activity>
-        <activity
+      <!--  <activity
                 android:name=".ui.DonationActivity"
                 android:label="@string/donation_activity_name"
                 android:configChanges="orientation|screenSize|screenLayout"

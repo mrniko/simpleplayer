@@ -10,18 +10,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import org.sergez.splayer.R;
-import org.sergez.splayer.ui.ActivityHelper;
 import org.sergez.splayer.ui.DonationActivity;
 import org.sergez.splayer.ui.ListData;
 import org.sergez.splayer.ui.PlayerFragment;
 import org.sergez.splayer.ui.PreferencesActivity;
-import org.sergez.splayer.ui.PreferencesFragment;
-import org.sergez.splayer.ui.SimplePlayerActivity;
 import org.sergez.splayer.service.SimplePlayerService;
 
 import java.io.File;
@@ -58,7 +54,8 @@ public final class Utils {
 		Activity spActivity = playerFragment.getActivity();
 		switch (menuItem.getItemId()) {
 			case R.id.menu_settings:
-				ActivityHelper.navigateTo((AppCompatActivity)spActivity, new PreferencesFragment(), ActivityHelper.getMainActivityContainer());
+				Intent preferencesActivity = new Intent(spActivity, PreferencesActivity.class);
+				spActivity.startActivity(preferencesActivity);
 				return true;
 			case R.id.menu_file_props:
 				if ((playerService!=null)&&(playerService.playerState >= 0)) {
