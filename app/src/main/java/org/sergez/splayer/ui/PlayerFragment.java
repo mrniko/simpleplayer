@@ -55,7 +55,7 @@ import static org.sergez.splayer.util.Utils.makeToast;
 
 public class PlayerFragment extends android.support.v4.app.Fragment {
 
-	private static final String TAG = SimplePlayerActivity.class.getSimpleName();
+	private static final String TAG = PlayerFragment.class.getSimpleName();
 	private Button buttonPlayStop;
 	private Button buttonNext;
 	private Button buttonPrev;
