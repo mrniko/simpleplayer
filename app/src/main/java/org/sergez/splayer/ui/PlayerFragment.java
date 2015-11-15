@@ -212,24 +212,12 @@ public class PlayerFragment extends android.support.v4.app.Fragment {
 		mpFileChangedFilter = new IntentFilter(SimplePlayerService.ACTION_NOWPLAYING);
 		playerServiceIntentReceiver = new PlayerServiceIntentReceiver();
 		getActivity().registerReceiver(playerServiceIntentReceiver, mpFileChangedFilter);
+		startPlayProgressUpdater();
 	}
-
-//	@Override
-//	public void onRestart() { //TODO
-//		super.onRestart();
-//		if (playerService == null) {
-//			startPlayerService();
-//			//all other things for player init we have to do in onServiceConnected()
-//		} else {
-//			playFileOperations(playerService.getCurrentlyPlayingFilePath());
-//			updateTrackTime();
-//		}
-//	}
 
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Add your menu entries here
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.action_menu, menu);
 		menuItemRepeat = menu.findItem(R.id.menu_repeat);
