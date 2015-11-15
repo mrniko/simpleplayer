@@ -20,7 +20,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import org.sergez.splayer.R;
-import org.sergez.splayer.ui.SimplePlayerActivity;
+import org.sergez.splayer.ui.MainActivity;
 import org.sergez.splayer.enums.RepeatState;
 import org.sergez.splayer.enums.ShuffleState;
 import org.sergez.splayer.util.FileFormat;
@@ -613,7 +613,7 @@ public class SimplePlayerService extends Service implements OnErrorListener, OnC
 	public void foregroundNotification(String textStatus, String textFilename) {
 
         PendingIntent pIntent =  PendingIntent.getActivity(this, 0,
-                new Intent(this, SimplePlayerActivity.class),
+                new Intent(this, MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
