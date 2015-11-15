@@ -95,11 +95,6 @@ public class PlayerFragment extends android.support.v4.app.Fragment {
 		return rootView;
 	}
 
-	// TODO
-//	@Override
-//	public void onNewIntent(Intent intent) {
-//		clearNotifications();
-//	}
 
 	public class PlayerServiceIntentReceiver extends BroadcastReceiver {
 		@Override
@@ -328,34 +323,39 @@ public class PlayerFragment extends android.support.v4.app.Fragment {
 		return Utils.menuClick(item, this, playerService);
 	}
 
-//	@Override//TODO
-//	public void onBackPressed() {
-//		// check if we are in root folder - do nothing
-//		if ((listData.getCurrentPathShowItemsSize() > 0)
-//				&& (listData.getCurrentPathShowKey(0).equals("../"))) {
-//			File file = new File(listData.getCurrentPathItemsFullpath(0));
-//			if (file.isDirectory()) {
-//				if (file.canRead()) {
-//					listData.setCurrentPath(listData.getCurrentPathItemsFullpath(0));
-//					Utils.moveToFolder(getActivity(), listData.getCurrentPath(), null, true, listData, externalMediaMounted, readInternalMedia);
-//					updateFileListAdapter(listData.getCurrentPathShowItems());
-//					textPath.setText(getString(R.string.location) + listData.getCurrentPath());
-//					moveToPrevPos(listData.getPrevListViewPosition());
-//				} else {
-//					showFolderCantBeRead(getActivity(), file);
-//				}
-//			}
-//			return;
-//		} else if (playerService.getPlayerState() > 0) {
-//			// if player is playing - just return to home screen
-//			Intent i = new Intent();
-//			i.setAction(Intent.ACTION_MAIN);
-//			i.addCategory(Intent.CATEGORY_HOME);
-//			this.startActivity(i);
-//		} else {
-//			super.onBackPressed();
-//		}
-//	}
+
+	/**
+	 *
+	 * @return true if event was consumed by fragment
+	 */
+	public boolean onBackPressed() {
+		// check if we are in root folder - do nothing
+		if ((listData.getCurrentPathShowItemsSize() > 0)
+				&& (listData.getCurrentPathShowKey(0).equals("../"))) {
+			File file = new File(listData.getCurrentPathItemsFullpath(0));
+			if (file.isDirectory()) {
+				if (file.canRead()) {
+					listData.setCurrentPath(listData.getCurrentPathItemsFullpath(0));
+					Utils.moveToFolder(getActivity(), listData.getCurrentPath(), null, true, listData, externalMediaMounted, readInternalMedia);
+					updateFileListAdapter(listData.getCurrentPathShowItems());
+					textPath.setText(getString(R.string.location) + listData.getCurrentPath());
+					moveToPrevPos(listData.getPrevListViewPosition());
+				} else {
+					showFolderCantBeRead(getActivity(), file);
+				}
+			}
+			return true;
+		} else if (playerService.getPlayerState() > 0) {
+			// if player is playing - just return to home screen
+			Intent i = new Intent();
+			i.setAction(Intent.ACTION_MAIN);
+			i.addCategory(Intent.CATEGORY_HOME);
+			this.startActivity(i);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	private void moveToPrevPos(List<Integer> prevListViewPos) {
 		int prevPos = prevListViewPos.get(prevListViewPos.size() - 1);//gets the last element
@@ -505,7 +505,7 @@ public class PlayerFragment extends android.support.v4.app.Fragment {
 		} else if (playerService.getPlayerState() == SimplePlayerService.PLAYER_IS_PLAYING) {
 			playerService.makePause();
 			if (!calledFromNotification) {
-				//TODO clearNotifications();
+				 clearNotifications();
 			}
 		}
 	}
@@ -619,15 +619,15 @@ public class PlayerFragment extends android.support.v4.app.Fragment {
 		buttonPlayStop.setText(R.string.button_pause);
 	}
 
-	//TODO
-//	/**
-//	 * Remove all notification if player is in pause mode or not ready
-//	 */
-//	private void clearNotifications() {
-//		if ((playerService != null) && (playerService.playerState < 1)) {
-//			SimplePlayerService.cancelAllNotifications(getActivity());
-//		}
-//	}
+
+	/**
+	 * Remove all notification if player is in pause mode or not ready
+	 */
+	void clearNotifications() {
+		if ((playerService != null) && (playerService.playerState < 1)) {
+			SimplePlayerService.cancelAllNotifications(getActivity());
+		}
+	}
 
 	private void playFileOperations(File file) {
 		if (playerService != null) {

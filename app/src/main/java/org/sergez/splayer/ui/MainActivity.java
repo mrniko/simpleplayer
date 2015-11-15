@@ -1,11 +1,13 @@
 package org.sergez.splayer.ui;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import org.sergez.splayer.R;
+import org.sergez.splayer.service.SimplePlayerService;
 
 import static org.sergez.splayer.ui.ActivityHelper.getMainActivityContainer;
 
@@ -27,5 +29,27 @@ public class MainActivity extends AppCompatActivity {
 		mToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 		setSupportActionBar(mToolbar);
 		ActivityHelper.navigateTo(this, new PlayerFragment(), getMainActivityContainer());
+	}
+
+	@Override
+	public void onNewIntent(Intent intent) {
+		clearNotifications();
+	}
+
+	public void clearNotifications(){
+		PlayerFragment myFragment = (PlayerFragment)getSupportFragmentManager().findFragmentByTag(PlayerFragment.class.getName());
+		if (myFragment != null && myFragment.isVisible()) {
+			myFragment.clearNotifications();
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		PlayerFragment myFragment = (PlayerFragment)getSupportFragmentManager().findFragmentByTag(PlayerFragment.class.getName());
+		if (myFragment != null && myFragment.isVisible()) {
+			if(!myFragment.onBackPressed()){
+				super.onBackPressed();
+			}
+		}
 	}
 }
